@@ -1,0 +1,46 @@
+parameters:
+    level: 10
+    phpVersion: 80200
+
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: true
+
+    paths:
+        - %currentWorkingDirectory%/Classes/
+        - %currentWorkingDirectory%/Configuration/
+        - %currentWorkingDirectory%/Tests/
+
+    excludePaths:
+        - %currentWorkingDirectory%/.build/*
+        - %currentWorkingDirectory%/ext_emconf.php
+
+    tmpDir: %currentWorkingDirectory%/.build/var/phpstan
+
+    ignoreErrors:
+        # Framework requires inheritance: Symfony Command, TYPO3 FunctionalTestCase.
+        - identifier: ergebnis.noExtends
+          paths:
+              - %currentWorkingDirectory%/Classes/Command/*
+              - %currentWorkingDirectory%/Tests/Functional/*
+          reportUnmatched: false
+
+        # PHP 8 named arguments are idiomatic for a DTO with many parameters;
+        # the rule is a style preference we reject (matches the shared config).
+        - identifier: ergebnis.noNamedArgument
+          reportUnmatched: false
+
+        # `?X` models the "Maybe<X>" pattern: an optional config value that is
+        # absent, or a renderer that emits nothing (returns null) rather than a
+        # fabricated file. Introducing sentinels would be strictly worse than the
+        # PHP-native idiom. Path-scoped so a new nullable elsewhere still flags.
+        - identifier: ergebnis.noParameterWithNullableTypeDeclaration
+          paths:
+              - %currentWorkingDirectory%/Classes/Configuration/WellKnownConfig.php
+              - %currentWorkingDirectory%/Classes/Command/GenerateCommand.php
+          reportUnmatched: false
+        - identifier: ergebnis.noNullableReturnTypeDeclaration
+          paths:
+              - %currentWorkingDirectory%/Classes/Configuration/WellKnownConfig.php
+              - %currentWorkingDirectory%/Classes/Resource/SecurityTxt.php
+              - %currentWorkingDirectory%/Classes/Resource/StaticResources.php
+          reportUnmatched: false

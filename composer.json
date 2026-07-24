@@ -1,0 +1,66 @@
+{
+    "name": "netresearch/nr-wellknown",
+    "description": "Serve the well-known resources a TYPO3 site should provide (security.txt, change-password, gpc.json, llms.txt, agent-skills.json) from per-site configuration.",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["typo3", "well-known", "security.txt", "rfc9116", "gpc"],
+    "authors": [
+        {
+            "name": "Team der Netresearch DTT GmbH",
+            "homepage": "https://www.netresearch.de"
+        }
+    ],
+    "homepage": "https://extensions.typo3.org/extension/nr_wellknown",
+    "support": {
+        "issues": "https://github.com/netresearch/t3x-nr-wellknown/issues",
+        "source": "https://github.com/netresearch/t3x-nr-wellknown"
+    },
+    "config": {
+        "bin-dir": ".build/bin",
+        "vendor-dir": ".build/vendor",
+        "sort-packages": true,
+        "allow-plugins": {
+            "a9f/fractor-extension-installer": true,
+            "captainhook/hook-installer": true,
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true,
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "typo3/cms-core": "^13.4 || ^14.3"
+    },
+    "require-dev": {
+        "netresearch/typo3-ci-workflows": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netresearch\\NrWellknown\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Netresearch\\NrWellknown\\Tests\\": "Tests/"
+        }
+    },
+    "scripts": {
+        "ci:cgl": "php-cs-fixer fix --config Build/.php-cs-fixer.dist.php --diff --verbose --cache-file .build/.php-cs-fixer.cache",
+        "ci:rector": "rector process --config Build/rector.php",
+        "ci:fractor": "fractor process --config Build/fractor.php",
+        "ci:test": "@ci:test:php:lint",
+        "ci:test:php:cgl": "@ci:cgl --dry-run",
+        "ci:test:php:fractor": "@ci:fractor --dry-run",
+        "ci:test:php:functional": "phpunit --configuration Build/FunctionalTests.xml",
+        "ci:test:php:lint": "phplint --configuration Build/.phplint.yml",
+        "ci:test:php:phpstan": "phpstan analyze --configuration Build/phpstan.neon --memory-limit=-1",
+        "ci:test:php:rector": "@ci:rector --dry-run",
+        "ci:test:php:unit": "phpunit --configuration Build/UnitTests.xml"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "nr_wellknown"
+        }
+    }
+}
