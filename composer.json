@@ -45,6 +45,18 @@
             "Netresearch\\NrWellknown\\Tests\\": "Tests/"
         }
     },
+    "scripts": {
+        "ci:cgl": "php-cs-fixer fix --config Build/.php-cs-fixer.dist.php --diff --verbose --cache-file .build/.php-cs-fixer.cache",
+        "ci:rector": "rector process --config Build/rector.php",
+        "ci:fractor": "fractor process --config Build/fractor.php",
+        "ci:test": "@ci:test:php:lint",
+        "ci:test:php:cgl": "@ci:cgl --dry-run",
+        "ci:test:php:fractor": "@ci:fractor --dry-run",
+        "ci:test:php:functional": "phpunit --configuration Build/FunctionalTests.xml",
+        "ci:test:php:phpstan": "phpstan analyze --configuration Build/phpstan.neon --memory-limit=-1",
+        "ci:test:php:rector": "@ci:rector --dry-run",
+        "ci:test:php:unit": "phpunit --configuration Build/UnitTests.xml"
+    },
     "extra": {
         "typo3/cms": {
             "extension-key": "nr_wellknown"
