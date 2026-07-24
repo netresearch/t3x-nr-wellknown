@@ -53,6 +53,7 @@
         "ci:test:php:cgl": "@ci:cgl --dry-run",
         "ci:test:php:fractor": "@ci:fractor --dry-run",
         "ci:test:php:functional": "phpunit --configuration Build/FunctionalTests.xml",
+        "ci:test:php:lint": "phplint --configuration Build/.phplint.yml",
         "ci:test:php:phpstan": "phpstan analyze --configuration Build/phpstan.neon --memory-limit=-1",
         "ci:test:php:rector": "@ci:rector --dry-run",
         "ci:test:php:unit": "phpunit --configuration Build/UnitTests.xml"
