@@ -18,8 +18,8 @@ $EM_CONF['nr_wellknown'] = [
     'version'        => '0.1.0',
     'constraints'    => [
         'depends'   => [
-            'php'   => '8.2.0-8.5.99',
-            'typo3' => '13.4.0-14.3.99',
+            'php'   => '8.2.0-8.99.99',
+            'typo3' => '13.4.0-14.99.99',
         ],
         'conflicts' => [],
         'suggests'  => [],

@@ -2,7 +2,7 @@
     "name": "netresearch/nr-wellknown",
     "description": "Serve the well-known resources a TYPO3 site should provide (security.txt, change-password, gpc.json, llms.txt, agent-skills.json) from per-site configuration.",
     "type": "typo3-cms-extension",
-    "license": "GPL-3.0-or-later",
+    "license": "GPL-2.0-or-later",
     "keywords": ["typo3", "well-known", "security.txt", "rfc9116", "gpc"],
     "authors": [
         {
@@ -29,7 +29,7 @@
         }
     },
     "require": {
-        "php": ">=8.2",
+        "php": "^8.2",
         "typo3/cms-core": "^13.4 || ^14.3"
     },
     "require-dev": {
