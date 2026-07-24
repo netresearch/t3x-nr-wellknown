@@ -11,9 +11,12 @@ declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Resource;
 
-use Netresearch\NrWellknown\Configuration\WellKnownConfig;
+use DateTimeImmutable;
 
 use function implode;
+
+use Netresearch\NrWellknown\Configuration\WellKnownConfig;
+
 use function sprintf;
 
 /**
@@ -22,7 +25,7 @@ use function sprintf;
  */
 final class SecurityTxt
 {
-    public static function render(WellKnownConfig $c, \DateTimeImmutable $now): ?string
+    public static function render(WellKnownConfig $c, DateTimeImmutable $now): ?string
     {
         if ($c->securityContacts() === []) {
             return null;

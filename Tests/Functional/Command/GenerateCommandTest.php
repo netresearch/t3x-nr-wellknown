@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the package netresearch/nr-wellknown.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Tests\Functional\Command;
@@ -28,6 +35,7 @@ final class GenerateCommandTest extends FunctionalTestCase
             YAML);
 
         $command = $this->get(GenerateCommand::class);
+        self::assertInstanceOf(GenerateCommand::class, $command);
         (new CommandTester($command))->execute([]);
 
         $base = Environment::getPublicPath();
@@ -36,7 +44,7 @@ final class GenerateCommandTest extends FunctionalTestCase
         self::assertFileDoesNotExist($base . '/.well-known/openid-configuration');  // never fabricated
         self::assertStringContainsString(
             'Contact: mailto:security@netresearch.de',
-            (string) file_get_contents($base . '/.well-known/security.txt')
+            (string) file_get_contents($base . '/.well-known/security.txt'),
         );
     }
 }

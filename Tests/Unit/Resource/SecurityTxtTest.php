@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the package netresearch/nr-wellknown.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Tests\Unit\Resource;
 
+use DateTimeImmutable;
 use Netresearch\NrWellknown\Configuration\WellKnownConfig;
 use Netresearch\NrWellknown\Resource\SecurityTxt;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +29,7 @@ final class SecurityTxtTest extends TestCase
 
     public function testRendersRfc9116WithFutureExpires(): void
     {
-        $now  = new \DateTimeImmutable('2026-07-24T09:00:00Z');
+        $now  = new DateTimeImmutable('2026-07-24T09:00:00Z');
         $body = SecurityTxt::render($this->config([
             'security' => ['contacts' => ['mailto:security@x.test'], 'policy' => 'https://x.test/p', 'preferredLanguages' => ['de', 'en']],
         ]), $now);
@@ -35,6 +43,6 @@ final class SecurityTxtTest extends TestCase
 
     public function testNoContactYieldsNull(): void
     {
-        self::assertNull(SecurityTxt::render($this->config([]), new \DateTimeImmutable('2026-07-24T09:00:00Z')));
+        self::assertNull(SecurityTxt::render($this->config([]), new DateTimeImmutable('2026-07-24T09:00:00Z')));
     }
 }

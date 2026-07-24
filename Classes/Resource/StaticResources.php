@@ -11,19 +11,24 @@ declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Resource;
 
-use Netresearch\NrWellknown\Configuration\WellKnownConfig;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use function array_values;
+
+use DateTimeImmutable;
+
 use function file_get_contents;
 use function is_file;
 use function json_encode;
+
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+
+use Netresearch\NrWellknown\Configuration\WellKnownConfig;
+
 use function rtrim;
 use function str_contains;
 use function str_starts_with;
 
-use const JSON_PRETTY_PRINT;
-use const JSON_UNESCAPED_SLASHES;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render the static well-known resources. Each method returns null when the
@@ -31,7 +36,7 @@ use const JSON_UNESCAPED_SLASHES;
  */
 final class StaticResources
 {
-    public static function gpcJson(WellKnownConfig $c, \DateTimeImmutable $now): ?string
+    public static function gpcJson(WellKnownConfig $c, DateTimeImmutable $now): ?string
     {
         if (!$c->gpcEnabled()) {
             return null;
@@ -39,7 +44,7 @@ final class StaticResources
 
         return json_encode(
             ['gpc' => true, 'lastUpdate' => $now->format('Y-m-d')],
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
         ) . "\n";
     }
 

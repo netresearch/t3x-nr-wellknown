@@ -11,11 +11,16 @@ declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Configuration;
 
-use TYPO3\CMS\Core\Site\Entity\Site;
-
 use function array_filter;
+use function array_key_exists;
 use function array_values;
+use function is_array;
+use function is_int;
+use function is_numeric;
+use function is_string;
 use function max;
+
+use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
  * Immutable view of one site's `wellknown` configuration, with safe defaults.
@@ -40,18 +45,77 @@ final readonly class WellKnownConfig
 
     public static function fromSite(Site $site): self
     {
-        $wk = $site->getConfiguration()['wellknown'] ?? [];
+        $wk       = self::section($site->getConfiguration(), 'wellknown');
+        $security = self::section($wk, 'security');
+        $change   = self::section($wk, 'changePassword');
+        $llms     = self::section($wk, 'llms');
+        $agent    = self::section($wk, 'agentSkills');
 
         return new self(
-            securityContacts: array_values(array_filter((array) ($wk['security']['contacts'] ?? []), 'is_string')),
-            securityPolicy: isset($wk['security']['policy']) ? (string) $wk['security']['policy'] : null,
-            preferredLanguages: array_values(array_filter((array) ($wk['security']['preferredLanguages'] ?? []), 'is_string')),
-            expiresMonths: (int) ($wk['security']['expiresMonths'] ?? 6),
-            changePasswordTarget: isset($wk['changePassword']['target']) ? (string) $wk['changePassword']['target'] : null,
-            gpcEnabled: (bool) ($wk['gpc'] ?? true),
-            llmsSource: isset($wk['llms']['source']) ? (string) $wk['llms']['source'] : null,
-            agentSkills: (array) ($wk['agentSkills']['skills'] ?? []),
+            securityContacts: array_values(array_filter(self::listOf($security, 'contacts'), is_string(...))),
+            securityPolicy: self::stringOrNull($security, 'policy'),
+            preferredLanguages: array_values(array_filter(self::listOf($security, 'preferredLanguages'), is_string(...))),
+            expiresMonths: self::intOr($security, 'expiresMonths', 6),
+            changePasswordTarget: self::stringOrNull($change, 'target'),
+            gpcEnabled: self::boolOr($wk, 'gpc', true),
+            llmsSource: self::stringOrNull($llms, 'source'),
+            agentSkills: self::listOf($agent, 'skills'),
         );
+    }
+
+    /**
+     * @param array<mixed> $a
+     *
+     * @return array<mixed>
+     */
+    private static function section(array $a, string $key): array
+    {
+        $value = $a[$key] ?? null;
+
+        return is_array($value) ? $value : [];
+    }
+
+    /**
+     * @param array<mixed> $a
+     *
+     * @return list<mixed>
+     */
+    private static function listOf(array $a, string $key): array
+    {
+        $value = $a[$key] ?? null;
+
+        return is_array($value) ? array_values($value) : [];
+    }
+
+    /**
+     * @param array<mixed> $a
+     */
+    private static function stringOrNull(array $a, string $key): ?string
+    {
+        $value = $a[$key] ?? null;
+
+        return is_string($value) ? $value : null;
+    }
+
+    /**
+     * @param array<mixed> $a
+     */
+    private static function intOr(array $a, string $key, int $default): int
+    {
+        $value = $a[$key] ?? null;
+        if (is_int($value)) {
+            return $value;
+        }
+
+        return is_numeric($value) ? (int) $value : $default;
+    }
+
+    /**
+     * @param array<mixed> $a
+     */
+    private static function boolOr(array $a, string $key, bool $default): bool
+    {
+        return array_key_exists($key, $a) ? (bool) $a[$key] : $default;
     }
 
     /**
