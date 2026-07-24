@@ -1,0 +1,48 @@
+{
+    "name": "netresearch/nr-wellknown",
+    "description": "Serve the well-known resources a TYPO3 site should provide (security.txt, change-password, gpc.json, llms.txt, agent-skills.json) from per-site configuration.",
+    "type": "typo3-cms-extension",
+    "license": "GPL-3.0-or-later",
+    "keywords": ["typo3", "well-known", "security.txt", "rfc9116", "gpc"],
+    "authors": [
+        {
+            "name": "Team der Netresearch DTT GmbH",
+            "homepage": "https://www.netresearch.de"
+        }
+    ],
+    "config": {
+        "bin-dir": ".build/bin",
+        "vendor-dir": ".build/vendor",
+        "sort-packages": true,
+        "allow-plugins": {
+            "a9f/fractor-extension-installer": true,
+            "captainhook/hook-installer": true,
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true,
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "typo3/cms-core": "^13.4 || ^14.0"
+    },
+    "require-dev": {
+        "netresearch/typo3-ci-workflows": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netresearch\\NrWellknown\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Netresearch\\NrWellknown\\Tests\\": "Tests/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "nr_wellknown"
+        }
+    }
+}
