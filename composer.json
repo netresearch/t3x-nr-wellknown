@@ -3,7 +3,13 @@
     "description": "Serve the well-known resources a TYPO3 site should provide (security.txt, change-password, gpc.json, llms.txt, agent-skills.json) from per-site configuration.",
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
-    "keywords": ["typo3", "well-known", "security.txt", "rfc9116", "gpc"],
+    "keywords": [
+        "typo3",
+        "well-known",
+        "security.txt",
+        "rfc9116",
+        "gpc"
+    ],
     "authors": [
         {
             "name": "Team der Netresearch DTT GmbH",
@@ -30,10 +36,16 @@
     },
     "require": {
         "php": "^8.2",
-        "typo3/cms-core": "^13.4 || ^14.3"
+        "typo3/cms-core": "^12.4 || ^13.4 || ^14.3"
     },
     "require-dev": {
-        "netresearch/typo3-ci-workflows": "^1.1"
+        "netresearch/typo3-ci-workflows": "^1.2",
+        "ergebnis/phpstan-rules": "^2.6",
+        "phpunit/phpunit": "^10.5 || ^11.5",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/extension-installer": "^1.4",
+        "friendsofphp/php-cs-fixer": "^3.68",
+        "typo3/testing-framework": "^8.2 || ^9.0"
     },
     "autoload": {
         "psr-4": {

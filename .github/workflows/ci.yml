@@ -18,10 +18,14 @@ jobs:
       contents: read
     with:
       php-versions: '["8.2","8.3","8.4","8.5"]'
-      typo3-versions: '["^13.4","^14.3"]'
+      typo3-versions: '["^12.4","^13.4","^14.3"]'
       run-functional-tests: true
       run-acceptance-tests: false
       functional-test-db: 'sqlite'
       php-extensions: 'intl, mbstring, xml'
       coverage-tool: 'none'
       upload-coverage: false
+      # typo3-ci-workflows only supports v13/v14; on the ^12.4 jobs it is removed
+      # and the explicitly pinned dev tools (phpunit ^10.5||^11.5, testing-framework
+      # ^8.2, phpstan, php-cs-fixer) take over — same pattern as t3x-nr-passkeys-be.
+      remove-dev-deps: '[{"dep":"netresearch/typo3-ci-workflows","only-for":"^13.4|^14.3"}]'
