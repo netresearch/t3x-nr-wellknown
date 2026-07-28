@@ -46,6 +46,11 @@ Tests/Unit, Tests/Functional                → mirror Classes/
 
 ## Boundaries
 
+- **Frontend only, never the backend.** Well-known URIs describe the site to its visitors.
+  `change-password` targets the fe_users password page and must never point at `/typo3` — a
+  well-known URI advertising the backend login is an invitation. No resource may carry backend
+  URLs, backend users or internal infrastructure. A site without frontend accounts leaves
+  `changePassword` unset; the 404 is correct.
 - **Always** add a test for a new resource or config value; a renderer returns `null` when its
   resource must not be emitted (so the command writes nothing).
 - **Never** commit generated well-known files — they carry a moving `Expires`.

@@ -28,6 +28,21 @@ NodeInfo/fediverse, ``apple-app-site-association``, ``api-catalog``, IndexNow an
 the other agent-readiness documents — are genuinely not-applicable to a site that
 does not offer them. A ``404`` is the correct answer there; do not fabricate them.
 
+Scope: frontend only, never the backend
+=======================================
+
+Well-known URIs describe the site to its **visitors** — the frontend. Nothing this
+extension serves may reference the TYPO3 backend:
+
+- ``change-password`` targets the page where a **frontend user** (``fe_users`` —
+  member area, customer portal) changes their password. It must **never** point at
+  the backend login (``/typo3``): a well-known URI advertising the admin login is
+  an invitation, not a service. The extension has no default target — a site
+  without frontend accounts simply leaves ``changePassword`` unconfigured and the
+  path answers ``404``, which is the correct, honest response.
+- The same rule applies to every other resource: content is site/visitor-facing
+  configuration, never backend URLs, backend users or internal infrastructure.
+
 Requirements on the web server
 ==============================
 
