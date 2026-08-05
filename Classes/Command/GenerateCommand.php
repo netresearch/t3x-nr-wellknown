@@ -85,6 +85,10 @@ final class GenerateCommand extends Command
     {
         if ($content === null) {
             if (is_file($path)) {
+                // nosemgrep: php.lang.security.unlink-use.unlink-use - no user
+                // input reaches $path. Every call site passes a literal file
+                // name appended to Environment::getPublicPath(), so the rule's
+                // premise (a path an actor can influence) does not hold here.
                 unlink($path);
             }
 
