@@ -85,6 +85,13 @@ final class GenerateCommand extends Command
     {
         if ($content === null) {
             if (is_file($path)) {
+                // No user input reaches $path: every call site appends a
+                // literal file name to Environment::getPublicPath(), so the
+                // rule's premise — a path an actor can influence — does not
+                // hold. The suppression has to sit on the line directly above
+                // the call; a comment block with the token on its first line
+                // is not recognised.
+                // nosemgrep: php.lang.security.unlink-use.unlink-use
                 unlink($path);
             }
 
