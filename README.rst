@@ -68,7 +68,7 @@ value is optional; a resource is emitted only when its required fields are set::
         contacts: ["mailto:security@netresearch.de"]   # >=1 required to emit
         policy: "https://www.netresearch.de/security-policy"
         preferredLanguages: ["de", "en"]
-        expiresMonths: 6                               # default 6
+        expiresMonths: 6                               # default 6, minimum 1
       changePassword:
         target: "https://www.netresearch.de/mein-konto/passwort"  # required to emit
       gpc: true                                         # default true
@@ -85,10 +85,11 @@ Run at deploy time::
     vendor/bin/typo3 nr:wellknown:generate
 
 This writes the configured files into ``public/.well-known/`` (and ``public/llms.txt``)
-and recomputes ``security.txt``'s ``Expires`` as *now + expiresMonths*. Re-running
-on every deploy keeps ``Expires`` valid, so the file never silently lapses. A site
-that deploys rarely should add a Scheduler task or CI cron invoking the same
-command. The generated files carry a moving date and are **not** committed to git.
+and recomputes ``security.txt``'s ``Expires`` as *now + expiresMonths*, where
+``expiresMonths`` is floored at 1 so a value of ``0`` or a negative one cannot
+produce an already-expired file. Re-running on every deploy keeps ``Expires``
+valid, so the file never silently lapses. A site that deploys rarely should add
+a Scheduler task or CI cron invoking the same command. The generated files carry a moving date and are **not** committed to git.
 
 Acceptance
 ==========
