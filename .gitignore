@@ -3,3 +3,4 @@
 /public/
 /var/
 /packages/
+.php-cs-fixer.cache
