@@ -28,8 +28,11 @@ provisioned, and each only when its required config is present.
 | Functional tests | `typo3DatabaseDriver=pdo_sqlite .build/bin/phpunit -c .build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional` |
 | Static analysis | `.build/bin/phpstan analyse Classes --level=8` |
 | Code style | `.build/bin/php-cs-fixer fix Classes Tests --rules=@PSR12 --dry-run --diff` |
+| Any suite in Docker (verified 2026-08-24) | `./Build/Scripts/runTests.sh -s unit\|functional\|lint\|phpstan\|rector\|cgl` |
 
 Functional tests run against sqlite in this environment.
+
+`Build/Scripts/runTests.sh` is the bootstrap stub of `netresearch/typo3-ci-workflows`; the runner comes from the package and is linked into `.build/bin`. It runs the suites in Docker against a chosen PHP version (`-p 8.2`) and picks up `Build/UnitTests.xml`, `Build/FunctionalTests.xml`, `Build/phpstan.neon`, `Build/rector.php` and `Build/.php-cs-fixer.dist.php` — the last three from non-standard locations, which it reports as a notice. It has no `fractor` suite, and its `-s lint` runs `php -l` over `Classes Configuration Tests` rather than `phplint` with `Build/.phplint.yml`, so it does not cover `ext_emconf.php` (netresearch/typo3-ci-workflows#217).
 
 ## File map
 
