@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: GPL-2.0-or-later -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
 # Design Spec — Static well-known provisioning for TYPO3 (`nr_wellknown`)
 
 - **Date:** 2026-07-24
