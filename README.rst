@@ -102,6 +102,14 @@ flip to *met*, the out-of-scope ones stay correctly *not applicable*, and
 ``curl -sI https://<host>/.well-known/security.txt`` returns ``200`` with a future
 ``Expires``.
 
+Architecture and security
+=========================
+
+`docs/SECURITY-ASSURANCE.md <https://github.com/netresearch/t3x-nr-wellknown/blob/main/docs/SECURITY-ASSURANCE.md>`__ describes the
+components, actors and data flows, what the extension does and does not
+guarantee in terms of security, its trust boundaries, and how it counters common
+weaknesses.
+
 Governance and policies
 =======================
 
