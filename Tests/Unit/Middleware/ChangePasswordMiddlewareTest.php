@@ -3,6 +3,9 @@
 /*
  * This file is part of the package netresearch/nr-wellknown.
  *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-FileCopyrightText: Netresearch DTT GmbH
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -39,6 +42,23 @@ final class ChangePasswordMiddlewareTest extends TestCase
             'wellknown' => ['changePassword' => ['target' => 'https://www.netresearch.de/passwort']],
         ]);
         $request = (new ServerRequest('https://www.netresearch.de/.well-known/change-password', 'GET'))
+            ->withAttribute('site', $site);
+
+        $response = (new ChangePasswordMiddleware())->process($request, $this->handler());
+
+        self::assertSame(302, $response->getStatusCode());
+        self::assertSame('https://www.netresearch.de/passwort', $response->getHeaderLine('Location'));
+    }
+
+    public function testRedirectTargetIsTakenFromSiteConfigurationNotFromTheRequest(): void
+    {
+        $site = new Site('main', 1, [
+            'base'      => 'https://www.netresearch.de/',
+            'wellknown' => ['changePassword' => ['target' => 'https://www.netresearch.de/passwort']],
+        ]);
+        $request = (new ServerRequest('https://www.netresearch.de/.well-known/change-password?target=https%3A%2F%2Fevil.example%2F', 'GET'))
+            ->withQueryParams(['target' => 'https://evil.example/', 'redirect_url' => 'https://evil.example/'])
+            ->withHeader('Referer', 'https://evil.example/')
             ->withAttribute('site', $site);
 
         $response = (new ChangePasswordMiddleware())->process($request, $this->handler());

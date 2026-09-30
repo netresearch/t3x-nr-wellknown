@@ -1,17 +1,19 @@
+<!-- SPDX-License-Identifier: GPL-2.0-or-later -->
+<!-- SPDX-FileCopyrightText: Netresearch DTT GmbH -->
 # Design Spec — Static well-known provisioning for TYPO3 (`nr_wellknown`)
 
 - **Date:** 2026-07-24
 - **Status:** Draft for review
 - **Author:** Sebastian Mendel
-- **Related:** [[NRNR-1578]] (the nginx deny-rule fix that unblocks `/.well-known/`),
-  NRS-4575 (apex→www redirect), the Website-Specification conformance checker
-  (`support/website-spec-checker`) which measures the acceptance criteria.
+- **Related:** the nginx deny-rule fix that unblocks `/.well-known/`, the apex→www
+  redirect, and the Website-Specification conformance checker, which measures the
+  acceptance criteria.
 
 ## 1. Context & goal
 
 The Website-Specification conformance checker probes ~22 `.well-known` and related URIs.
 On www.netresearch.de every one returned **403** — a single nginx rule (`location ~ /\.`)
-blanket-blocked the whole `.well-known/` tree. That rule was exempted fleet-wide in NRNR-1578,
+blanket-blocked the whole `.well-known/` tree. That rule was exempted fleet-wide by the deny-rule fix,
 so the paths now reach the docroot instead of 403ing. **Unblocking is only half the job:** once
 reachable, most of these URIs still return **404**, because nothing serves them.
 
@@ -37,7 +39,7 @@ Provide exactly these, chosen as the set that applies to a corporate TYPO3 site 
 | Agent skills discovery | `/.well-known/agent-skills.json` | static | `agent-readiness.agent-skills-discovery` |
 
 Note: `well-known-uris.well-known-uris` (the "blanket-blocked" verdict) is cleared by the
-NRNR-1578 deny-fix alone — that is a *reachability* check, not a content check. This extension is
+deny-rule fix alone — that is a *reachability* check, not a content check. This extension is
 what flips the individual per-resource criteria above from `not_met` to `met`.
 
 **Explicitly excluded** (correct as 404 / not-applicable, do not fabricate):
@@ -51,7 +53,7 @@ what flips the individual per-resource criteria above from `not_met` to `met`.
 
 ## 3. The load-bearing constraint: how nginx routes `.well-known`
 
-The merged NRNR-1578 block (`netresearch/t3re` `rootfs/etc/nginx/conf.d/default.conf:166-168`) is:
+The merged deny-rule fix in the t3re runtime image's nginx configuration is:
 
 ```nginx
 location ^~ /.well-known/ {
@@ -65,7 +67,7 @@ merged file:
 
 - A **physical file** at `public/.well-known/<name>` is served directly by nginx — fast, no PHP.
 - An **absent** path returns **404 from nginx** and never reaches TYPO3 (regular traffic goes via
-  `@t3frontend` at `:102`; this block does not fall through to it).
+  `@t3frontend`; this block does not fall through to it).
 
 Therefore: static content works as-is, but a **redirect** (`change-password`) cannot be a static
 file. This spec adds one line so absent paths fall through to TYPO3:
@@ -78,7 +80,7 @@ location ^~ /.well-known/ {
 
 Static files still win (nginx serves them before the fallthrough); only absent paths reach
 TYPO3, where the extension's middleware handles the redirect. This is one line in the same t3re
-block NRNR-1578 already touched, and it also future-proofs any later dynamic well-known.
+block the deny-rule fix already touched, and it also future-proofs any later dynamic well-known.
 
 ## 4. Architecture
 
@@ -181,8 +183,8 @@ and confirm:
 
 ## 9. Rollout order
 
-1. Build and release `netresearch/nr-wellknown` (internal Packagist / composer.netresearch.de).
-2. Merge the one-line `try_files` change into `netresearch/t3re` and let it ship in the runtime
+1. Build and release `netresearch/nr-wellknown` (internal Composer repository).
+2. Merge the one-line `try_files` change into the t3re runtime image and let it ship in the runtime
    image; deploy the runtime.
 3. netresearch.de: `composer require netresearch/nr-wellknown`, fill `wellknown` in the site
    config, wire `wellknown:generate` into the deploy, deploy.
@@ -197,5 +199,5 @@ and confirm:
 - **`change-password` for sites without frontend accounts.** If netresearch.de has no `fe_users`
   password-change page, `change-password` is legitimately not-applicable there; leave
   `wellknown.changePassword` unset and it 404s correctly. Confirm the target during implementation.
-- **GitLab namespace** for the extension repo (`netresearch/nr-wellknown` vs a coding-ai/TER path)
+- **GitLab namespace** for the extension repo (`netresearch/nr-wellknown` vs another group or a TER path)
   — confirm before creating the remote and pushing.

@@ -1,3 +1,6 @@
+.. SPDX-License-Identifier: GPL-2.0-or-later
+.. SPDX-FileCopyrightText: Netresearch DTT GmbH
+
 ============================
 Netresearch: Well-Known
 ============================
@@ -98,3 +101,27 @@ Verify with the Website-Specification conformance checker: the in-scope criteria
 flip to *met*, the out-of-scope ones stay correctly *not applicable*, and
 ``curl -sI https://<host>/.well-known/security.txt`` returns ``200`` with a future
 ``Expires``.
+
+Architecture and security
+=========================
+
+`docs/SECURITY-ASSURANCE.md <https://github.com/netresearch/t3x-nr-wellknown/blob/main/docs/SECURITY-ASSURANCE.md>`__ describes the
+components, actors and data flows, what the extension does and does not
+guarantee in terms of security, its trust boundaries, and how it counters common
+weaknesses.
+
+Governance and policies
+=======================
+
+This extension follows the organisation-wide Netresearch policies:
+
+- `Governance <https://github.com/netresearch/.github/blob/main/GOVERNANCE.md>`__: ownership, roles, how decisions are made and conflicts resolved.
+- `Roadmap <https://github.com/netresearch/.github/blob/main/ROADMAP.md>`__: planned and excluded work for the next twelve months.
+- `Handling of dependency and code analysis findings <https://github.com/netresearch/.github/blob/main/SECURITY.md#handling-of-dependency-and-code-analysis-findings>`__: which vulnerability, licence and static-analysis findings must be fixed, by when, and how exceptions are recorded.
+- `Secret management <https://github.com/netresearch/.github/blob/main/SECURITY.md#secret-management>`__: where CI and release credentials are stored, who may use them, how committed secrets are detected, and when secrets are rotated.
+- `Access roster <https://github.com/netresearch/.github/blob/main/docs/access-roster.md>`__: the people and teams with administrative or write access to this repository.
+
+Checks that run on every pull request in this repository:
+
+- ``.github/workflows/checks.yml``: Composer Audit (fails on any advisory for an installed package; ``composer.json`` lists no ``config.audit.ignore`` exceptions) and Opengrep SAST (fails a pull request as the `organisation rule <https://github.com/netresearch/.github/blob/main/SECURITY.md#static-analysis-sast>`__ sets out), both through ``typo3-ci-workflows``' ``security.yml``; Dependency Review (fails on newly added dependencies with a vulnerability of severity high or higher); PHP License Audit (``license-check.yml``, fails when ``composer licenses`` reports a dependency licence that is exactly ``SSPL`` or ``BSL``); CodeQL with language auto-detection, which finds no JavaScript or Go here and analyses the workflow files (CodeQL has no PHP analysis; PHPStan and Opengrep cover the PHP code); Betterleaks secret scanning; zizmor for the workflow files (reported to code scanning, not blocking); ``pr-quality`` (the pull request size check, and the automatic approval of pull requests that maintainers open); the aggregate gate ``All security checks``, which fails when any of these jobs fails. The fuzz job finds no ``Build/phpunit.xml`` and is skipped. The OpenSSF Scorecard job runs only on pushes to ``main`` and on the weekly schedule.
+- ``.github/workflows/ci.yml``: PHP lint on PHP 8.2 to 8.5; code style (PHP-CS-Fixer, ``Build/.php-cs-fixer.dist.php``) and Rector (``Build/rector.php``) on PHP 8.2; PHPStan (level 10, ``Build/phpstan.neon``), the advisory ``PHPStan (unpinned PHPUnit)`` job, which runs PHPStan once more against the newest PHPUnit, unit tests and functional tests (SQLite) on PHP 8.2 to 8.5 with TYPO3 ^12.4, ^13.4 and ^14.3. Fractor is not part of the CI run, and there is no ``Documentation/`` directory to render. The aggregate gate ``ci / All CI checks`` fails when any of these jobs fails.

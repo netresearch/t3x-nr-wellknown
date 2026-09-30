@@ -3,6 +3,9 @@
 /*
  * This file is part of the package netresearch/nr-wellknown.
  *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-FileCopyrightText: Netresearch DTT GmbH
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -20,6 +23,7 @@ use function is_file;
 use function json_encode;
 
 use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 
 use Netresearch\NrWellknown\Configuration\WellKnownConfig;
@@ -44,7 +48,7 @@ final class StaticResources
 
         return json_encode(
             ['gpc' => true, 'lastUpdate' => $now->format('Y-m-d')],
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
         ) . "\n";
     }
 
@@ -74,6 +78,6 @@ final class StaticResources
             return null;
         }
 
-        return json_encode(['skills' => array_values($skills)], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+        return json_encode(['skills' => array_values($skills)], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
     }
 }

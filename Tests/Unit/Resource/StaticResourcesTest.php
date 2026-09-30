@@ -3,6 +3,9 @@
 /*
  * This file is part of the package netresearch/nr-wellknown.
  *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ * SPDX-FileCopyrightText: Netresearch DTT GmbH
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -12,6 +15,10 @@ declare(strict_types=1);
 namespace Netresearch\NrWellknown\Tests\Unit\Resource;
 
 use DateTimeImmutable;
+
+use const INF;
+
+use JsonException;
 use Netresearch\NrWellknown\Configuration\WellKnownConfig;
 use Netresearch\NrWellknown\Resource\StaticResources;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +52,14 @@ final class StaticResourcesTest extends TestCase
         $json = StaticResources::agentSkillsJson($this->config(['agentSkills' => ['skills' => [['name' => 'x']]]]));
         self::assertNotNull($json);
         self::assertStringContainsString('"name": "x"', $json);
+    }
+
+    public function testAgentSkillsThatCannotBeEncodedFailInsteadOfYieldingAnEmptyDocument(): void
+    {
+        // YAML `.inf` in the site configuration arrives as INF, which JSON cannot represent.
+        $this->expectException(JsonException::class);
+
+        StaticResources::agentSkillsJson($this->config(['agentSkills' => ['skills' => [['weight' => INF]]]]));
     }
 
     public function testInlineLlmsTextPassedThrough(): void
