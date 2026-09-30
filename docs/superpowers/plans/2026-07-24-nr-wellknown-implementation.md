@@ -36,7 +36,7 @@
 | `Tests/Unit/…`, `Tests/Functional/…` | Test suite |
 | `README.rst`, `AGENTS.md` | Docs (verified, house style) |
 
-**Cross-repo (separate MRs, Tasks 9–10):** `netresearch/t3re` nginx line; `netresearch/netresearch` site config + deploy wiring.
+**Cross-repo (separate MRs, Tasks 9–10):** the t3re runtime image's nginx line; the netresearch.de site repository's config + deploy wiring.
 
 ---
 
@@ -118,7 +118,7 @@ services:
     resource: '../Classes/*'
 ```
 
-- [ ] **Step 4: Write `LICENSE`** — the GPL-3.0-or-later text (copy from `~/p/nr-image-optimize/main/LICENSE`) and a `.gitignore` with `.build/` and `composer.lock`.
+- [ ] **Step 4: Write `LICENSE`** — the GPL-3.0-or-later text (copy from another Netresearch extension's `LICENSE`) and a `.gitignore` with `.build/` and `composer.lock`.
 
 - [ ] **Step 5: Verify**
 
@@ -864,7 +864,7 @@ git commit -S -s -m "docs: document configuration, generation and the nginx depe
 ## Task 8: t3re nginx fallthrough (separate repo)
 
 **Files:**
-- Modify: `netresearch/t3re` `rootfs/etc/nginx/conf.d/default.conf` (the `location ^~ /.well-known/` block)
+- Modify: the t3re runtime image's nginx `default.conf` (the `location ^~ /.well-known/` block)
 
 **Interfaces:**
 - Produces: absent `.well-known` paths fall through to TYPO3, so the change-password middleware is reachable; static files still served directly.
@@ -881,12 +881,12 @@ to:
 ```nginx
 location ^~ /.well-known/ {
     # Serve a present static file directly; fall through to TYPO3 for absent
-    # paths so nr_wellknown can answer /.well-known/change-password. NRNR-1578.
+    # paths so nr_wellknown can answer /.well-known/change-password.
     try_files $uri $uri/ @t3frontend;
 }
 ```
 
-- [ ] **Step 2: Open the MR** via `glab api -X POST "projects/4018/merge_requests" -H "Content-Type: application/json"` (the CLI form aborts outside a checkout). The pipeline's `test-ping` / `traefik`-equivalent healthcheck (or the repo's config-parse gate) validates the change. Do **not** merge without sign-off — this is a fleet runtime.
+- [ ] **Step 2: Open the MR** in the runtime image's repository. The pipeline's `test-ping` / `traefik`-equivalent healthcheck (or the repo's config-parse gate) validates the change. Do **not** merge without sign-off — this is a fleet runtime.
 
 - [ ] **Step 3: Verify** on the branch that the block reads back exactly as intended (re-fetch the raw file) and that the diff is that block only.
 
@@ -895,7 +895,7 @@ location ^~ /.well-known/ {
 ## Task 9: netresearch.de application (separate repo)
 
 **Files:**
-- Modify: `netresearch/netresearch` `config/sites/main/config.yaml`, the deploy pipeline
+- Modify: the site repository's `config/sites/main/config.yaml`, the deploy pipeline
 
 **Interfaces:**
 - Consumes: the released extension + the t3re fallthrough.
