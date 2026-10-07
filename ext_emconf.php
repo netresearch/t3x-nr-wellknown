@@ -11,8 +11,8 @@
  */
 
 $EM_CONF['nr_wellknown'] = [
-    'title'          => 'Netresearch: Well-Known Resources',
-    'description'    => 'Serve the well-known resources a TYPO3 site should provide, from per-site configuration.',
+    'title'          => 'Well-Known Resources',
+    'description'    => 'Serve the well-known resources a site should provide (security.txt, change-password, gpc.json, llms.txt, agent-skills.json) from per-site configuration.',
     'category'       => 'fe',
     'author'         => 'Team der Netresearch DTT GmbH',
     'author_email'   => '',
