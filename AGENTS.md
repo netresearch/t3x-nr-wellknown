@@ -10,7 +10,6 @@ agent-skills.json) from per-site configuration. Static content is generated into
 one redirect (change-password) is a PSR-15 middleware.
 
 **Design:** `docs/superpowers/specs/2026-07-24-static-wellknown-typo3-design.md`.
-**Plan:** `docs/superpowers/plans/2026-07-24-nr-wellknown-implementation.md`.
 **Architecture and security:** `docs/SECURITY-ASSURANCE.md` (update it when a resource, an entry point or a trust assumption changes).
 
 ## The one rule that matters
