@@ -65,8 +65,7 @@ Tests/Unit, Tests/Functional                → mirror Classes/
   resource must not be emitted (so the command writes nothing).
 - **Never** commit generated well-known files — they carry a moving `Expires`.
 - **Ask first** before widening the scope beyond the 5 in-scope resources.
-- Commits: Conventional Commits, signed + DCO (`git commit -S -s`). No `Co-Authored-By` or other credit
-  lines for tools; agent-written commits carry the `Assisted-by` disclosure trailer.
+- Commits: Conventional Commits, signed + DCO (`git commit -S -s`).
 
 ## Not yet done
 
