@@ -10,7 +10,6 @@ agent-skills.json) from per-site configuration. Static content is generated into
 one redirect (change-password) is a PSR-15 middleware.
 
 **Design:** `docs/superpowers/specs/2026-07-24-static-wellknown-typo3-design.md`.
-**Plan:** `docs/superpowers/plans/2026-07-24-nr-wellknown-implementation.md`.
 **Architecture and security:** `docs/SECURITY-ASSURANCE.md` (update it when a resource, an entry point or a trust assumption changes).
 
 ## The one rule that matters
@@ -65,8 +64,7 @@ Tests/Unit, Tests/Functional                → mirror Classes/
   resource must not be emitted (so the command writes nothing).
 - **Never** commit generated well-known files — they carry a moving `Expires`.
 - **Ask first** before widening the scope beyond the 5 in-scope resources.
-- Commits: Conventional Commits, signed + DCO (`git commit -S -s`). No `Co-Authored-By` or other credit
-  lines for tools; agent-written commits carry the `Assisted-by` disclosure trailer.
+- Commits: Conventional Commits, signed + DCO (`git commit -S -s`).
 
 ## Not yet done
 
