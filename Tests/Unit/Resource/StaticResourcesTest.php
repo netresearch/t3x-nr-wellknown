@@ -15,14 +15,13 @@ declare(strict_types=1);
 namespace Netresearch\NrWellknown\Tests\Unit\Resource;
 
 use DateTimeImmutable;
-
-use const INF;
-
 use JsonException;
 use Netresearch\NrWellknown\Configuration\WellKnownConfig;
 use Netresearch\NrWellknown\Resource\StaticResources;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Site\Entity\Site;
+
+use const INF;
 
 final class StaticResourcesTest extends TestCase
 {

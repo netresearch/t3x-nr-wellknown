@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Configuration;
 
+use TYPO3\CMS\Core\Site\Entity\Site;
+
 use function array_filter;
 use function array_key_exists;
 use function array_values;
@@ -22,8 +24,6 @@ use function is_int;
 use function is_numeric;
 use function is_string;
 use function max;
-
-use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
  * Immutable view of one site's `wellknown` configuration, with safe defaults.
