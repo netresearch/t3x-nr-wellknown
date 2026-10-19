@@ -16,19 +16,9 @@ namespace Netresearch\NrWellknown\Command;
 
 use DateTimeImmutable;
 use DateTimeZone;
-
-use function dirname;
-use function file_put_contents;
-use function is_dir;
-use function is_file;
-use function mkdir;
-
 use Netresearch\NrWellknown\Configuration\WellKnownConfig;
 use Netresearch\NrWellknown\Resource\SecurityTxt;
 use Netresearch\NrWellknown\Resource\StaticResources;
-
-use function sprintf;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,6 +27,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
+use function dirname;
+use function file_put_contents;
+use function is_dir;
+use function is_file;
+use function mkdir;
+use function sprintf;
 use function unlink;
 
 /**

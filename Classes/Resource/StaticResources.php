@@ -14,25 +14,21 @@ declare(strict_types=1);
 
 namespace Netresearch\NrWellknown\Resource;
 
-use function array_values;
-
 use DateTimeImmutable;
+use Netresearch\NrWellknown\Configuration\WellKnownConfig;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use function array_values;
 use function file_get_contents;
 use function is_file;
 use function json_encode;
-
-use const JSON_PRETTY_PRINT;
-use const JSON_THROW_ON_ERROR;
-use const JSON_UNESCAPED_SLASHES;
-
-use Netresearch\NrWellknown\Configuration\WellKnownConfig;
-
 use function rtrim;
 use function str_contains;
 use function str_starts_with;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
 
 /**
  * Render the static well-known resources. Each method returns null when the

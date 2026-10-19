@@ -1,23 +1,29 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # SPDX-FileCopyrightText: Netresearch DTT GmbH
 
-parameters:
-    level: 10
-    phpVersion: 80200
+# The shared config of netresearch/typo3-ci-workflows sets level 10,
+# treatPhpDocTypesAsCertain, the strictness flags and the excludePaths;
+# phpstan/extension-installer registers phpstan-typo3, phpat and the other
+# PHPStan extensions. phpstan-shared.php includes it only where the package
+# is installed, see the comment there.
+includes:
+    - phpstan-shared.php
 
-    treatPhpDocTypesAsCertain: false
-    reportUnmatchedIgnoredErrors: true
+parameters:
+    phpVersion: 80200
 
     paths:
         - %currentWorkingDirectory%/Classes/
         - %currentWorkingDirectory%/Configuration/
         - %currentWorkingDirectory%/Tests/
 
-    excludePaths:
-        - %currentWorkingDirectory%/.build/*
-        - %currentWorkingDirectory%/ext_emconf.php
-
     tmpDir: %currentWorkingDirectory%/.build/var/phpstan
+
+    # The shared config disables allRules and opts in to six ergebnis rules.
+    # This extension already passes the full ergebnis set (the default until
+    # now), so it keeps it; the ignores below are the exceptions it made.
+    ergebnis:
+        allRules: true
 
     ignoreErrors:
         # Framework requires inheritance: Symfony Command, TYPO3 FunctionalTestCase.
